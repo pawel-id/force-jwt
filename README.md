@@ -51,7 +51,7 @@ Reference:
 npm install
 
 # Run the script
-tsx src/auth.ts "$USERNAME" "$SERVER_KEY" "$CLIENT_ID"
+npx tsx src/auth.ts "$USERNAME" "$SERVER_KEY" "$CLIENT_ID"
 ```
 
 See source code [src/auth.ts](src/auth.ts).
