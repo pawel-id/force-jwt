@@ -46,15 +46,74 @@ Reference:
 - https://github.com/salesforcecli/plugin-auth/blob/main/src/commands/org/login/jwt.ts
 - https://forcedotcom.github.io/sfdx-core/
 
+#### Development
+
 ```bash
 # Install dependencies (including @salesforce/core)
 npm install
 
-# Run the script
-npx tsx src/auth.ts "$USERNAME" "$SERVER_KEY" "$CLIENT_ID"
+# Build the project
+npm run build
+
+# Type check the code
+npm run typecheck
+
+# Lint the code
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+
+# Format the code with Prettier
+npm run format
+
+# Check if code needs formatting
+npm run format:check
+
+# Run basic tests
+npm run test
+
+# Check for security vulnerabilities
+npm run audit
+
+# Fix security vulnerabilities automatically
+npm run audit:fix
+
+# Run all CI checks (typecheck, lint, format, build, test)
+npm run ci
 ```
 
-See source code [src/auth.ts](src/auth.ts).
+#### Using the CLI script
+
+```bash
+# Run the script with required parameters
+npx tsx src/cli.ts "$USERNAME" "$SERVER_KEY" "$CLIENT_ID"
+
+# For sandbox orgs, specify the test login URL
+npx tsx src/cli.ts "$USERNAME" "$SERVER_KEY" "$CLIENT_ID" "https://test.salesforce.com"
+
+# For production orgs (default), you can omit the login URL
+npx tsx src/cli.ts "$USERNAME" "$SERVER_KEY" "$CLIENT_ID" "https://login.salesforce.com"
+```
+
+#### Using the API programmatically
+
+```typescript
+import { getAuthInfoForJwt, getConnection } from './src/auth.js'
+
+const authInfo = await getAuthInfoForJwt({
+  username: 'your-username@example.com',
+  clientId: 'your-client-id',
+  privateKeyFile: 'path/to/server.key',
+  loginUrl: 'https://login.salesforce.com' // or https://test.salesforce.com for sandbox
+})
+
+const conn = await getConnection(authInfo)
+console.log(`Connected as: ${conn.getUsername()}`)
+console.log(`Instance URL: ${conn.instanceUrl}`)
+```
+
+See source code [src/auth.ts](src/auth.ts) for the API and [src/cli.ts](src/cli.ts) for the CLI script.
 
 ## Further reading
 

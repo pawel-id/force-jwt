@@ -4,13 +4,28 @@
   "description": "A simple JWT authentication example for Salesforce",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts",
+    "test": "npx tsx src/auth.test.ts",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix",
+    "ci": "npm run typecheck && npm run lint && npm run format:check && npm run build && npm run test"
   },
   "dependencies": {
     "@salesforce/core": "^8.11.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.36.0",
     "@types/node": "^22.15.18",
+    "@typescript-eslint/eslint-plugin": "^8.45.0",
+    "@typescript-eslint/parser": "^8.45.0",
+    "eslint": "^9.36.0",
+    "prettier": "^3.6.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   }
