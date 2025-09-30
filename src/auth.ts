@@ -6,11 +6,19 @@ import { AuthInfo, AuthRemover, Connection } from '@salesforce/core'
  *
  * @param username username
  */
-export async function getAuthInfoForAlias(username: string) {
+export async function getAuthInfoForAlias(username: string): Promise<AuthInfo> {
   return await AuthInfo.create({ username })
 }
 
-
+/**
+ * Configuration options for JWT authentication
+ */
+export interface JwtAuthOptions {
+  username: string
+  clientId: string
+  privateKeyFile: string
+  loginUrl?: string
+}
 
 /**
  * Returns `AuthInfo` for JWT login. 
@@ -18,22 +26,33 @@ export async function getAuthInfoForAlias(username: string) {
  * see salesforce cli implementation for reference:
  * https://github.com/salesforcecli/plugin-auth/blob/main/src/commands/org/login/jwt.ts
  * 
- * @param username 
- * @param clientId 
- * @param privateKeyFile 
+ * @param options JWT authentication options
+ * @param options.username Salesforce username
+ * @param options.clientId Connected App consumer key
+ * @param options.privateKeyFile Path to the private key file
+ * @param options.loginUrl Salesforce login URL (defaults to production)
+ * @returns Promise resolving to AuthInfo instance
  */
-export async function getAuthInfoForJwt(
-  username: string,
-  clientId: string,
-  privateKeyFile: string
-) {
+export async function getAuthInfoForJwt(options: JwtAuthOptions): Promise<AuthInfo> {
+  const { username, clientId, privateKeyFile, loginUrl = 'https://login.salesforce.com' } = options
+
+  // Validate required parameters
+  if (!username) {
+    throw new Error('Username is required')
+  }
+  if (!clientId) {
+    throw new Error('Client ID is required')
+  }
+  if (!privateKeyFile) {
+    throw new Error('Private key file path is required')
+  }
+
   const authInfoOptions: AuthInfo.Options = {
     username,
     oauth2Options: {
       clientId,
       privateKeyFile,
-      // note: this loginUrl works only for non-production orgs
-      loginUrl: 'https://test.salesforce.com',
+      loginUrl,
     },
   }
 
@@ -55,13 +74,14 @@ export async function getAuthInfoForJwt(
   return authInfo
 }
 
-export async function getConnection(authInfo: AuthInfo) {
+/**
+ * Creates a Salesforce connection from AuthInfo
+ * 
+ * @param authInfo AuthInfo instance
+ * @returns Promise resolving to Connection instance
+ */
+export async function getConnection(authInfo: AuthInfo): Promise<Connection> {
   return await Connection.create({ authInfo })
 }
 
-const [username, serverKey, clientId] = process.argv.slice(2)
 
-const authInfoForJwt = await getAuthInfoForJwt(username, clientId, serverKey)
-const conn = await getConnection(authInfoForJwt)
-console.log(conn.getUsername())
-console.log(conn.instanceUrl)
