@@ -71,7 +71,16 @@ npm run format
 npm run format:check
 
 # Run basic tests
-npx tsx src/auth.test.ts
+npm run test
+
+# Check for security vulnerabilities
+npm run audit
+
+# Fix security vulnerabilities automatically
+npm run audit:fix
+
+# Run all CI checks (typecheck, lint, format, build, test)
+npm run ci
 ```
 
 #### Using the CLI script

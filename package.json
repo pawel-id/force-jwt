@@ -11,7 +11,10 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",
     "format:check": "prettier --check src/**/*.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx tsx src/auth.test.ts",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix",
+    "ci": "npm run typecheck && npm run lint && npm run format:check && npm run build && npm run test"
   },
   "dependencies": {
     "@salesforce/core": "^8.11.0"
