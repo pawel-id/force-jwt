@@ -6,9 +6,9 @@ import { getAuthInfoForJwt, getConnection } from './auth.js'
  * CLI script for JWT authentication with Salesforce
  * Usage: npx tsx src/cli.ts <username> <privateKeyFile> <clientId> [loginUrl]
  */
-async function main() {
+async function main(): Promise<void> {
   const args = process.argv.slice(2)
-  
+
   if (args.length < 3) {
     console.error('Error: Missing required arguments')
     console.error('Usage: npx tsx src/cli.ts <username> <privateKeyFile> <clientId> [loginUrl]')
@@ -37,12 +37,12 @@ async function main() {
       username,
       clientId,
       privateKeyFile,
-      loginUrl
+      loginUrl,
     })
 
     console.log('Creating connection...')
     const conn = await getConnection(authInfo)
-    
+
     console.log('✅ Authentication successful!')
     console.log(`Username: ${conn.getUsername()}`)
     console.log(`Instance URL: ${conn.instanceUrl}`)

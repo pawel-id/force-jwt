@@ -57,6 +57,21 @@ npm run build
 
 # Type check the code
 npm run typecheck
+
+# Lint the code
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+
+# Format the code with Prettier
+npm run format
+
+# Check if code needs formatting
+npm run format:check
+
+# Run basic tests
+npx tsx src/auth.test.ts
 ```
 
 #### Using the CLI script

@@ -21,11 +21,11 @@ export interface JwtAuthOptions {
 }
 
 /**
- * Returns `AuthInfo` for JWT login. 
- * 
+ * Returns `AuthInfo` for JWT login.
+ *
  * see salesforce cli implementation for reference:
  * https://github.com/salesforcecli/plugin-auth/blob/main/src/commands/org/login/jwt.ts
- * 
+ *
  * @param options JWT authentication options
  * @param options.username Salesforce username
  * @param options.clientId Connected App consumer key
@@ -76,12 +76,10 @@ export async function getAuthInfoForJwt(options: JwtAuthOptions): Promise<AuthIn
 
 /**
  * Creates a Salesforce connection from AuthInfo
- * 
+ *
  * @param authInfo AuthInfo instance
  * @returns Promise resolving to Connection instance
  */
 export async function getConnection(authInfo: AuthInfo): Promise<Connection> {
   return await Connection.create({ authInfo })
 }
-
-
